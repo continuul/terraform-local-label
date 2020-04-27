@@ -1,6 +1,6 @@
 module "label1" {
   source      = "../../"
-  namespace   = "Continuul"
+  namespace   = "Hashicorp"
   environment = "UAT"
   stage       = "build"
   name        = "Winston Churchroom"

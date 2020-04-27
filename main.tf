@@ -1,7 +1,12 @@
 locals {
 
   defaults = {
-    label_order = ["namespace", "environment", "stage", "name", "attributes"]
+    label_order = [
+      "namespace",
+      "environment",
+      "stage",
+      "name",
+    "attributes"]
     delimiter   = "-"
     replacement = ""
     # The `sentinel` should match the `regex_replace_chars`, so it will be replaced with the `replacement` value
@@ -15,17 +20,21 @@ locals {
   regex_replace_chars = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)
 
   name               = lower(replace(coalesce(var.name, var.context.name, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  namespace          = lower(replace(coalesce(var.namespace, var.context.namespace, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
   environment        = lower(replace(coalesce(var.environment, var.context.environment, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  owner              = lower(replace(coalesce(var.owner, var.context.owner, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  group              = lower(replace(coalesce(var.group, var.context.group, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  namespace          = lower(replace(coalesce(var.namespace, var.context.namespace, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
   stage              = lower(replace(coalesce(var.stage, var.context.stage, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
   delimiter          = coalesce(var.delimiter, var.context.delimiter, local.defaults.delimiter)
   label_order        = length(var.label_order) > 0 ? var.label_order : (length(var.context.label_order) > 0 ? var.context.label_order : local.defaults.label_order)
   additional_tag_map = merge(var.context.additional_tag_map, var.additional_tag_map)
 
+  normalized_tags = { for l in keys(var.tags) : title(l) => lower(var.tags[l]) if length(var.tags[l]) > 0 }
+
   # Merge attributes
   attributes = compact(distinct(concat(var.attributes, var.context.attributes, local.defaults.attributes)))
 
-  tags = merge(var.context.tags, local.generated_tags, var.tags)
+  tags = merge(var.context.tags, local.generated_tags, local.normalized_tags)
 
   tags_as_list_of_maps = flatten([
     for key in keys(local.tags) : merge(
@@ -38,8 +47,10 @@ locals {
   tags_context = {
     # For AWS we need `Name` to be disambiguated since it has a special meaning
     name        = local.id
-    namespace   = local.namespace
     environment = local.environment
+    owner       = local.owner
+    group       = local.group
+    namespace   = local.namespace
     stage       = local.stage
     attributes  = local.id_context.attributes
   }
@@ -48,8 +59,10 @@ locals {
 
   id_context = {
     name        = local.name
-    namespace   = local.namespace
     environment = local.environment
+    owner       = local.owner
+    group       = local.group
+    namespace   = local.namespace
     stage       = local.stage
     attributes  = lower(replace(join(local.delimiter, local.attributes), local.regex_replace_chars, local.defaults.replacement))
   }
@@ -60,11 +73,15 @@ locals {
 
   # Context of this label to pass to other label modules
   output_context = {
-    enabled             = local.enabled
-    name                = local.name
+    enabled = local.enabled
+
+    name        = local.name
+    stage       = local.stage
+    environment = local.environment
+
+    owner               = local.owner
+    group               = local.group
     namespace           = local.namespace
-    environment         = local.environment
-    stage               = local.stage
     attributes          = local.attributes
     tags                = local.tags
     delimiter           = local.delimiter

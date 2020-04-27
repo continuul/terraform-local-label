@@ -1,19 +1,19 @@
+variable "owner" {
+  type        = string
+  default     = ""
+  description = "Owner, who is responsible for the resource, e.g. 'john.smith' or 'doctor'"
+}
+
+variable "group" {
+  type        = string
+  default     = ""
+  description = "Group, who is associated with a resource, typically for cost allocation and tracking, e.g. 'finance' or 'ap'"
+}
+
 variable "namespace" {
   type        = string
   default     = ""
   description = "Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp'"
-}
-
-variable "environment" {
-  type        = string
-  default     = ""
-  description = "Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT'"
-}
-
-variable "stage" {
-  type        = string
-  default     = ""
-  description = "Stage, e.g. 'prod', 'staging', 'dev', OR 'source', 'build', 'test', 'deploy', 'release'"
 }
 
 variable "name" {

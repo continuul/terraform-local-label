@@ -1,6 +1,6 @@
 module "label4" {
   source      = "../../"
-  namespace   = "Continuul"
+  namespace   = "Hashicorp"
   environment = "UAT"
   name        = "Example Cluster"
   attributes  = ["big", "fat", "honking", "cluster"]
