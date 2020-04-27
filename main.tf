@@ -19,12 +19,14 @@ locals {
   enabled             = var.enabled
   regex_replace_chars = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)
 
-  name               = lower(replace(coalesce(var.name, var.context.name, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  environment        = lower(replace(coalesce(var.environment, var.context.environment, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  owner              = lower(replace(coalesce(var.owner, var.context.owner, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  group              = lower(replace(coalesce(var.group, var.context.group, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  namespace          = lower(replace(coalesce(var.namespace, var.context.namespace, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  stage              = lower(replace(coalesce(var.stage, var.context.stage, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  name        = lower(replace(coalesce(var.name, var.context.name, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  stage       = lower(replace(coalesce(var.stage, var.context.stage, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  environment = lower(replace(coalesce(var.environment, var.context.environment, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+
+  owner     = lower(replace(coalesce(var.owner, var.context.owner, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  group     = lower(replace(coalesce(var.group, var.context.group, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  namespace = lower(replace(coalesce(var.namespace, var.context.namespace, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+
   delimiter          = coalesce(var.delimiter, var.context.delimiter, local.defaults.delimiter)
   label_order        = length(var.label_order) > 0 ? var.label_order : (length(var.context.label_order) > 0 ? var.context.label_order : local.defaults.label_order)
   additional_tag_map = merge(var.context.additional_tag_map, var.additional_tag_map)
@@ -47,24 +49,28 @@ locals {
   tags_context = {
     # For AWS we need `Name` to be disambiguated since it has a special meaning
     name        = local.id
-    environment = local.environment
-    owner       = local.owner
-    group       = local.group
-    namespace   = local.namespace
     stage       = local.stage
-    attributes  = local.id_context.attributes
+    environment = local.environment
+
+    owner     = local.owner
+    group     = local.group
+    namespace = local.namespace
+
+    attributes = local.id_context.attributes
   }
 
   generated_tags = { for l in keys(local.tags_context) : title(l) => local.tags_context[l] if length(local.tags_context[l]) > 0 }
 
   id_context = {
     name        = local.name
-    environment = local.environment
-    owner       = local.owner
-    group       = local.group
-    namespace   = local.namespace
     stage       = local.stage
-    attributes  = lower(replace(join(local.delimiter, local.attributes), local.regex_replace_chars, local.defaults.replacement))
+    environment = local.environment
+
+    owner     = local.owner
+    group     = local.group
+    namespace = local.namespace
+
+    attributes = lower(replace(join(local.delimiter, local.attributes), local.regex_replace_chars, local.defaults.replacement))
   }
 
   labels = [for l in local.label_order : local.id_context[l] if length(local.id_context[l]) > 0]
@@ -79,9 +85,10 @@ locals {
     stage       = local.stage
     environment = local.environment
 
-    owner               = local.owner
-    group               = local.group
-    namespace           = local.namespace
+    owner     = local.owner
+    group     = local.group
+    namespace = local.namespace
+
     attributes          = local.attributes
     tags                = local.tags
     delimiter           = local.delimiter
