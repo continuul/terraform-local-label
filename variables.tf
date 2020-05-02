@@ -40,10 +40,22 @@ variable "enabled" {
   description = "Set to false to prevent the module from creating any resources"
 }
 
+variable "casing" {
+  type        = string
+  default     = "title"
+  description = "Casing, that is to be used for tag keys, e.g. `lower`, `title`, `upper`"
+}
+
 variable "delimiter" {
   type        = string
   default     = "-"
   description = "Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes`"
+}
+
+variable "prefix" {
+  type        = string
+  default     = ""
+  description = "Prefix to be used with tags"
 }
 
 variable "attributes" {
@@ -73,12 +85,15 @@ variable "context" {
     namespace           = string
     stage               = string
     enabled             = bool
+    casing              = string
     delimiter           = string
+    prefix              = string
     attributes          = list(string)
     label_order         = list(string)
     tags                = map(string)
     additional_tag_map  = map(string)
     regex_replace_chars = string
+    replacement         = string
   })
   default = {
     name                = ""
@@ -88,12 +103,15 @@ variable "context" {
     namespace           = ""
     stage               = ""
     enabled             = true
+    casing              = "title"
     delimiter           = ""
+    prefix              = ""
     attributes          = []
     label_order         = []
     tags                = {}
     additional_tag_map  = {}
     regex_replace_chars = ""
+    replacement         = ""
   }
   description = "Default context to use for passing state between label invocations"
 }
@@ -107,5 +125,11 @@ variable "label_order" {
 variable "regex_replace_chars" {
   type        = string
   default     = "/[^a-zA-Z0-9-]/"
-  description = "Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed"
+  description = "Regex to replace chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed"
+}
+
+variable "replacement" {
+  type        = string
+  default     = ""
+  description = "Replacement character for regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed"
 }

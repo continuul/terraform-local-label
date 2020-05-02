@@ -1,7 +1,6 @@
 [![Continuul][logo]](https://continuul.solutions)
 
-# terraform-local-label [![Slack Community](https://continuul.slack.com/badge.svg)](https://slack.continuul.com)
-
+# terraform-local-label [![Slack Community](https://img.shields.io/badge/slack-@continuul/green.svg?logo=slack)](https://slack.continuul.com)
 
 Terraform module designed to generate consistent names and tags for resources. Use `terraform-local-label` to implement a strict naming convention.
 
@@ -487,7 +486,8 @@ No provider.
 |------|-------------|------|---------|:--------:|
 | additional\_tag\_map | Additional tags for appending to each tag map | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
-| context | Default context to use for passing state between label invocations | <pre>object({<br>    name                = string<br>    environment         = string<br>    owner               = string<br>    group               = string<br>    namespace           = string<br>    stage               = string<br>    enabled             = bool<br>    delimiter           = string<br>    attributes          = list(string)<br>    label_order         = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "delimiter": "",<br>  "enabled": true,<br>  "environment": "",<br>  "group": "",<br>  "label_order": [],<br>  "name": "",<br>  "namespace": "",<br>  "owner": "",<br>  "regex_replace_chars": "",<br>  "stage": "",<br>  "tags": {}<br>}</pre> | no |
+| casing | Casing, that is to be used for tag keys, e.g. `lower`, `title`, `upper` | `string` | `"title"` | no |
+| context | Default context to use for passing state between label invocations | <pre>object({<br>    name                = string<br>    environment         = string<br>    owner               = string<br>    group               = string<br>    namespace           = string<br>    stage               = string<br>    enabled             = bool<br>    casing              = string<br>    delimiter           = string<br>    prefix              = string<br>    attributes          = list(string)<br>    label_order         = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    replacement         = string<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "casing": "title",<br>  "delimiter": "",<br>  "enabled": true,<br>  "environment": "",<br>  "group": "",<br>  "label_order": [],<br>  "name": "",<br>  "namespace": "",<br>  "owner": "",<br>  "prefix": "",<br>  "regex_replace_chars": "",<br>  "replacement": "",<br>  "stage": "",<br>  "tags": {}<br>}</pre> | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
@@ -496,7 +496,9 @@ No provider.
 | name | Solution name, e.g. 'app' or 'jenkins' | `string` | `""` | no |
 | namespace | Namespace, which could be your organization name or abbreviation, e.g. 'eg' or 'cp' | `string` | `""` | no |
 | owner | Owner, who is responsible for the resource, e.g. 'john.smith' or 'doctor' | `string` | `""` | no |
-| regex\_replace\_chars | Regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `"/[^a-zA-Z0-9-]/"` | no |
+| prefix | Prefix to be used with tags | `string` | `""` | no |
+| regex\_replace\_chars | Regex to replace chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `"/[^a-zA-Z0-9-]/"` | no |
+| replacement | Replacement character for regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `""` | no |
 | stage | Stage, e.g. 'source', 'build', 'test', 'deploy', 'release' | `string` | `""` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |
 
@@ -559,12 +561,9 @@ In general, PRs are welcome. We follow the typical "fork-and-pull" Git workflow.
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-
 ## About
 
 [Continuul, LLC][website] maintains and funds this project.
-
-[![Continuul][logo]][website]
 
   [logo]: https://avatars3.githubusercontent.com/u/57697117?s=60&v=4
   [docs]: https://cpco.io/docs?utm_source=github&utm_medium=readme&utm_campaign=continuul/terraform-local-label&utm_content=docs

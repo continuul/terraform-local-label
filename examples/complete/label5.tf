@@ -3,9 +3,11 @@ module "label5" {
   enabled     = false
   namespace   = "eg"
   environment = "demo"
-  name        = "blue"
+  name        = "blue ocean"
   attributes  = ["cluster"]
   delimiter   = "-"
+  owner       = "robert buck"
+  replacement = "-"
 
   label_order = ["namespace", "stage", "environment", "attributes"]
 
