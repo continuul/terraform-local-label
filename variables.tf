@@ -78,40 +78,42 @@ variable "additional_tag_map" {
 
 variable "context" {
   type = object({
-    name                = string
-    environment         = string
-    owner               = string
-    group               = string
-    namespace           = string
-    stage               = string
-    enabled             = bool
-    casing              = string
-    delimiter           = string
-    prefix              = string
-    attributes          = list(string)
-    label_order         = list(string)
-    tags                = map(string)
-    additional_tag_map  = map(string)
-    regex_replace_chars = string
-    replacement         = string
+    name                      = string
+    environment               = string
+    owner                     = string
+    group                     = string
+    namespace                 = string
+    stage                     = string
+    enabled                   = bool
+    casing                    = string
+    delimiter                 = string
+    prefix                    = string
+    attributes                = list(string)
+    label_order               = list(string)
+    tags                      = map(string)
+    additional_tag_map        = map(string)
+    regex_replace_chars       = string
+    regex_replace_chars_owner = string
+    replacement               = string
   })
   default = {
-    name                = ""
-    environment         = ""
-    owner               = ""
-    group               = ""
-    namespace           = ""
-    stage               = ""
-    enabled             = true
-    casing              = "title"
-    delimiter           = ""
-    prefix              = ""
-    attributes          = []
-    label_order         = []
-    tags                = {}
-    additional_tag_map  = {}
-    regex_replace_chars = ""
-    replacement         = ""
+    name                      = ""
+    environment               = ""
+    owner                     = ""
+    group                     = ""
+    namespace                 = ""
+    stage                     = ""
+    enabled                   = true
+    casing                    = "title"
+    delimiter                 = ""
+    prefix                    = ""
+    attributes                = []
+    label_order               = []
+    tags                      = {}
+    additional_tag_map        = {}
+    regex_replace_chars       = ""
+    regex_replace_chars_owner = ""
+    replacement               = ""
   }
   description = "Default context to use for passing state between label invocations"
 }
@@ -126,6 +128,12 @@ variable "regex_replace_chars" {
   type        = string
   default     = "/[^a-zA-Z0-9-]/"
   description = "Regex to replace chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed"
+}
+
+variable "regex_replace_chars_owner" {
+  type        = string
+  default     = "/[^a-zA-Z0-9-+_.@]/"
+  description = "Regex to replace owner chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, underscrores, dots, plus, letters and digits are allowed, all other chars are removed. This is to permit owner to be an email name or slack id"
 }
 
 variable "replacement" {

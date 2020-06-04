@@ -14,16 +14,18 @@ locals {
     # The `sentinel` should match the `regex_replace_chars`, so it will be replaced with the `replacement` value
     sentinel = "~"
     attributes = [
-    ""]
+      ""
+    ]
   }
 
   # The values provided by variables supersede the values inherited from the context
 
-  enabled             = var.enabled
-  regex_replace_chars = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)
-  replacement         = coalesce(var.replacement, var.context.replacement, local.defaults.replacement, local.defaults.sentinel) == local.defaults.sentinel ? local.defaults.replacement : coalesce(var.replacement, var.context.replacement, local.defaults.replacement, local.defaults.sentinel)
-  prefix_is_empty     = coalesce(var.prefix, var.context.prefix, local.defaults.sentinel) == local.defaults.sentinel
-  prefix              = local.prefix_is_empty ? local.defaults.prefix : lower(coalesce(var.prefix, var.context.prefix))
+  enabled                   = var.enabled
+  regex_replace_chars       = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)
+  regex_replace_chars_owner = coalesce(var.regex_replace_chars_owner, var.context.regex_replace_chars_owner)
+  replacement               = coalesce(var.replacement, var.context.replacement, local.defaults.replacement, local.defaults.sentinel) == local.defaults.sentinel ? local.defaults.replacement : coalesce(var.replacement, var.context.replacement, local.defaults.replacement, local.defaults.sentinel)
+  prefix_is_empty           = coalesce(var.prefix, var.context.prefix, local.defaults.sentinel) == local.defaults.sentinel
+  prefix                    = local.prefix_is_empty ? local.defaults.prefix : lower(coalesce(var.prefix, var.context.prefix))
 
   name_is_empty        = coalesce(var.name, var.context.name, local.defaults.sentinel) == local.defaults.sentinel
   name                 = local.name_is_empty ? "" : lower(replace(coalesce(var.name, var.context.name, local.defaults.sentinel), local.regex_replace_chars, local.replacement))
@@ -33,7 +35,7 @@ locals {
   environment          = local.environment_is_empty ? "" : lower(replace(coalesce(var.environment, var.context.environment, local.defaults.sentinel), local.regex_replace_chars, local.replacement))
 
   owner_is_empty     = coalesce(var.owner, var.context.owner, local.defaults.sentinel) == local.defaults.sentinel
-  owner              = local.owner_is_empty ? "" : lower(replace(coalesce(var.owner, var.context.owner, local.defaults.sentinel), local.regex_replace_chars, local.replacement))
+  owner              = local.owner_is_empty ? "" : lower(replace(coalesce(var.owner, var.context.owner, local.defaults.sentinel), local.regex_replace_chars_owner, local.replacement))
   group_is_empty     = coalesce(var.group, var.context.group, local.defaults.sentinel) == local.defaults.sentinel
   group              = local.group_is_empty ? "" : lower(replace(coalesce(var.group, var.context.group, local.defaults.sentinel), local.regex_replace_chars, local.replacement))
   namespace_is_empty = coalesce(var.namespace, var.context.namespace, local.defaults.sentinel) == local.defaults.sentinel
@@ -125,15 +127,16 @@ locals {
     group     = local.group
     namespace = local.namespace
 
-    attributes          = local.attributes
-    tags                = local.tags
-    casing              = local.casing
-    delimiter           = local.delimiter
-    prefix              = local.prefix
-    label_order         = local.label_order
-    regex_replace_chars = local.regex_replace_chars
-    replacement         = local.replacement
-    additional_tag_map  = local.additional_tag_map
+    attributes                = local.attributes
+    tags                      = local.tags
+    casing                    = local.casing
+    delimiter                 = local.delimiter
+    prefix                    = local.prefix
+    label_order               = local.label_order
+    regex_replace_chars       = local.regex_replace_chars
+    regex_replace_chars_owner = local.regex_replace_chars_owner
+    replacement               = local.replacement
+    additional_tag_map        = local.additional_tag_map
   }
 
 }

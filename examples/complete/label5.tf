@@ -6,8 +6,9 @@ module "label5" {
   name        = "blue ocean"
   attributes  = ["cluster"]
   delimiter   = "-"
-  owner       = "robert buck"
+  owner       = "john smith"
   replacement = "-"
+  prefix      = "eg"
 
   label_order = ["namespace", "stage", "environment", "attributes"]
 

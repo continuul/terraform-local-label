@@ -241,7 +241,7 @@ module "label1" {
   namespace   = "Hashicorp"
   environment = "UAT"
   stage       = "build"
-  name        = "Winston Churchroom"
+  name        = "Web Server"
   attributes  = ["fire", "water", "earth", "air"]
   delimiter   = "-"
 
@@ -487,7 +487,7 @@ No provider.
 | additional\_tag\_map | Additional tags for appending to each tag map | `map(string)` | `{}` | no |
 | attributes | Additional attributes (e.g. `1`) | `list(string)` | `[]` | no |
 | casing | Casing, that is to be used for tag keys, e.g. `lower`, `title`, `upper` | `string` | `"title"` | no |
-| context | Default context to use for passing state between label invocations | <pre>object({<br>    name                = string<br>    environment         = string<br>    owner               = string<br>    group               = string<br>    namespace           = string<br>    stage               = string<br>    enabled             = bool<br>    casing              = string<br>    delimiter           = string<br>    prefix              = string<br>    attributes          = list(string)<br>    label_order         = list(string)<br>    tags                = map(string)<br>    additional_tag_map  = map(string)<br>    regex_replace_chars = string<br>    replacement         = string<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "casing": "title",<br>  "delimiter": "",<br>  "enabled": true,<br>  "environment": "",<br>  "group": "",<br>  "label_order": [],<br>  "name": "",<br>  "namespace": "",<br>  "owner": "",<br>  "prefix": "",<br>  "regex_replace_chars": "",<br>  "replacement": "",<br>  "stage": "",<br>  "tags": {}<br>}</pre> | no |
+| context | Default context to use for passing state between label invocations | <pre>object({<br>    name                      = string<br>    environment               = string<br>    owner                     = string<br>    group                     = string<br>    namespace                 = string<br>    stage                     = string<br>    enabled                   = bool<br>    casing                    = string<br>    delimiter                 = string<br>    prefix                    = string<br>    attributes                = list(string)<br>    label_order               = list(string)<br>    tags                      = map(string)<br>    additional_tag_map        = map(string)<br>    regex_replace_chars       = string<br>    regex_replace_chars_owner = string<br>    replacement               = string<br>  })</pre> | <pre>{<br>  "additional_tag_map": {},<br>  "attributes": [],<br>  "casing": "title",<br>  "delimiter": "",<br>  "enabled": true,<br>  "environment": "",<br>  "group": "",<br>  "label_order": [],<br>  "name": "",<br>  "namespace": "",<br>  "owner": "",<br>  "prefix": "",<br>  "regex_replace_chars": "",<br>  "regex_replace_chars_owner": "",<br>  "replacement": "",<br>  "stage": "",<br>  "tags": {}<br>}</pre> | no |
 | delimiter | Delimiter to be used between `namespace`, `environment`, `stage`, `name` and `attributes` | `string` | `"-"` | no |
 | enabled | Set to false to prevent the module from creating any resources | `bool` | `true` | no |
 | environment | Environment, e.g. 'prod', 'staging', 'dev', 'pre-prod', 'UAT' | `string` | `""` | no |
@@ -498,6 +498,7 @@ No provider.
 | owner | Owner, who is responsible for the resource, e.g. 'john.smith' or 'doctor' | `string` | `""` | no |
 | prefix | Prefix to be used with tags | `string` | `""` | no |
 | regex\_replace\_chars | Regex to replace chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `"/[^a-zA-Z0-9-]/"` | no |
+| regex\_replace\_chars\_owner | Regex to replace owner chars with empty string (or `replacement`) in `namespace`, `environment`, `stage` and `name`. By default only hyphens, underscrores, dots, plus, letters and digits are allowed, all other chars are removed. This is to permit owner to be an email name or slack id | `string` | `"/[^a-zA-Z0-9-+_.@]/"` | no |
 | replacement | Replacement character for regex to replace chars with empty string in `namespace`, `environment`, `stage` and `name`. By default only hyphens, letters and digits are allowed, all other chars are removed | `string` | `""` | no |
 | stage | Stage, e.g. 'source', 'build', 'test', 'deploy', 'release' | `string` | `""` | no |
 | tags | Additional tags (e.g. `map('BusinessUnit','XYZ')` | `map(string)` | `{}` | no |

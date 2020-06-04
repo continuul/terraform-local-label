@@ -3,7 +3,7 @@ module "label1" {
   namespace   = "Hashicorp"
   environment = "UAT"
   stage       = "build"
-  name        = "Winston Churchroom"
+  name        = "Web Server"
   attributes  = ["fire", "water", "earth", "air"]
   delimiter   = "-"
 
